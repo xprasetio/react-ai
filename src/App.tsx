@@ -56,13 +56,7 @@ export default function App() {
     fetchAllNotebooks();
   }, []);
   const handleNoteUpdate = (noteId: string, updates: Partial<Note>) => {
-    setNotes((prev) =>
-      prev.map((note) =>
-        note.id === noteId
-          ? { ...note, ...updates, updatedAt: new Date() }
-          : note,
-      ),
-    );
+    fetchAllNotebooks();
   };
 
   const handleNotebookUpdate = (
