@@ -13,9 +13,11 @@ import { mockNotes } from "./lib/mock-data";
 import "./App.css";
 import axios from "axios";
 import type { BaseResponse } from "./dto/base-response";
-import type {
-  CreateNotebookRequest,
-  GetAllNotebooksResponse,
+import {
+  type MoveNotebookResponse,
+  type CreateNotebookRequest,
+  type GetAllNotebooksResponse,
+  type MoveNotebookRequest,
 } from "./dto/notebook";
 import { AppConfig } from "./config/config";
 
@@ -121,6 +123,17 @@ export default function App() {
   const handleMoveNote = async (noteId: string, targetNotebookId: string) => {
     setIsProcessingMove(true); // Start global loading for move
     await new Promise((resolve) => setTimeout(resolve, 800)); // Dummy delay
+
+    const request: MoveNotebookRequest = {
+      parent_id: targetNotebookId,
+    };
+
+    await axios.put<BaseResponse<MoveNotebookResponse>>(
+      `${AppConfig.apiBaseUrl}/api/note/v1/${noteId}/move`,
+      request,
+    );
+
+    await fetchAllNotebooks();
 
     setNotes((prev) =>
       prev.map((note) =>
